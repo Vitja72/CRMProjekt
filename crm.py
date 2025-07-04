@@ -33,3 +33,4 @@ def kunde_hinzufuegen():
 # Test der Funktionen (werden später durch ein Menü ersetzt)
 # kunde_hinzufuegen()
 # kunden_anzeigen()
+

@@ -38,7 +38,15 @@ def kunde_hinzufuegen():
     Verhindert das Hinzufügen von Kunden mit bereits existierendem Namen.
     """
     print("\n--- Kunden hinzufügen ---")
-    name = input("Name des Kunden: ")
+    
+    # Überprüfung ob name eingegeben wurde 
+    while True:
+        name = input("Name des Kunden: ")
+        if name and name.isalpha():
+            break
+        else:
+            print("Du musste einen Namen eingeben")
+
 
     # Validierung für E-Mail: Schleife, bis ein gültiges Format eingegeben wird
     while True:

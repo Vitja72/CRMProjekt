@@ -1,6 +1,9 @@
+import json # NEU
+
 # Dein Kundenmanagement-System
 
 kunden = {} # Ein Dictionary zum Speichern der Kunden. Schlüssel: Kundenname, Wert: Dictionary mit Details
+DATEINAME = "kunden.json" # NEU: Dateiname für die Speicherung des Katalogs
 
 def kunden_anzeigen():
     if not kunden:
@@ -81,6 +84,30 @@ def kunde_loeschen():
     else:
         print(f"Fehler: Kunde '{name_zu_loeschen}' nicht im Katalog gefunden.")
 
+def katalog_speichern():
+    try:
+        with open(DATEINAME, 'w', encoding='utf-8') as f:
+            json.dump(kunden, f, indent=4, ensure_ascii=False)
+        print(f"Katalog erfolgreich in '{DATEINAME}' gespeichert.")
+    except IOError as e:
+        print(f"Fehler beim Speichern des Katalogs: {e}")
+
+def katalog_laden():
+    global kunden
+    try:
+        with open(DATEINAME, 'r', encoding='utf-8') as f:
+            kunden.update(json.load(f))
+        print(f"Katalog erfolgreich aus '{DATEINAME}' geladen.")
+    except FileNotFoundError:
+        print("Keine vorhandene Katalogdatei gefunden. Starte mit leerem Katalog.")
+        kunden.clear()
+    except json.JSONDecodeError as e:
+        print(f"Fehler beim Laden des Katalogs (ungültiges JSON): {e}. Starte mit leerem Katalog.")
+        kunden.clear()
+    except Exception as e:
+        print(f"Ein unerwarteter Fehler beim Laden ist aufgetreten: {e}. Starte mit leerem Katalog.")
+        kunden.clear()
+
 def zeige_menue():
     print("\n--- CRM Menü ---")
     print("1. Kunde hinzufügen")
@@ -92,6 +119,7 @@ def zeige_menue():
     print("----------------")
 
 def main():
+    katalog_laden()
     while True:
         zeige_menue()
         wahl = input("Ihre Wahl: ")
@@ -107,6 +135,7 @@ def main():
         elif wahl == '5':
             kunde_loeschen()
         elif wahl == '6':
+            katalog_speichern()
             print("Programm wird beendet. Auf Wiedersehen!")
             break
         else:
